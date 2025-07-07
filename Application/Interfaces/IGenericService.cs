@@ -1,6 +1,6 @@
 ﻿namespace practice_0502025.Application.Interfaces
 {
-    public interface IGenericService<TEntityDto>
+    public interface IGenericService<TEntity,TEntityDto>
         where TEntityDto : class // Or define a common base DTO with an Id
     {
         Task<IEnumerable<TEntityDto>> GetAllAsync();

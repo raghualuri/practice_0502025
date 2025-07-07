@@ -8,12 +8,12 @@ namespace practice_0502025.Controllers.Base
 {
     [ApiController]
     [Route("api/[controller]")]
-    public abstract class BaseController<TEntityDto> : ControllerBase
+    public abstract class BaseController<TEntity,TEntityDto> : ControllerBase
         where TEntityDto : class
     {
-        protected readonly IGenericService<TEntityDto> _service;
+        protected readonly IGenericService<TEntity,TEntityDto> _service;
 
-        public BaseController(IGenericService<TEntityDto> service)
+        public BaseController(IGenericService< TEntity,TEntityDto> service)
         {
             _service = service;
         }

@@ -1,10 +1,10 @@
 ﻿// File Path: practice_0502025/Mapping/MappingProfile.cs
 
 using AutoMapper;
-using practice_0502025.Application.DTO; // Make sure this path is correct for your DTOs
-using practice_0502025.Entities;      // Make sure this path is correct for your Entities
+using practice_0502025.Application.DTOs; 
+using practice_0502025.Entities;    
 
-namespace practice_0502025.Mapping // This namespace should match your new folder
+namespace practice_0502025.Mapping 
 {
     public class MappingProfile : Profile
     {
@@ -15,6 +15,8 @@ namespace practice_0502025.Mapping // This namespace should match your new folde
 
             // Map from Product entity (source, e.g., from DB) to ProductDto (destination, for API response)
             CreateMap<Product, ProductDto>();
+            CreateMap<CategoryDto, Category>();
+            CreateMap<Category, CategoryDto>();
 
             // If you want to map in both directions for Product and it's always symmetrical:
             // CreateMap<Product, ProductDto>().ReverseMap();

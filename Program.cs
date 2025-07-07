@@ -5,8 +5,9 @@ using practice_0502025.Services; // For ProductService
 using practice_0502025.Application.Interfaces; // New: For IGenericRepository, IGenericService
 using practice_0502025.Services.Implementations; // New: For GenericRepository, GenericService
 using practice_0502025.Entities; // New: For Product entity
-using practice_0502025.Application.DTO; // New: For ProductDto
+using practice_0502025.Application.DTOs; // New: For ProductDto
 using practice_0502025.Mapping; // New: For MappingProfile
+using practice_0502025.Infrastructure.Data; // Or where your UnitOfWork is
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,10 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 // --- New: Register Generic Service for Product ---
 // This registers IGenericService<ProductDto> to be implemented by GenericService<Product, ProductDto>
-builder.Services.AddScoped<IGenericService<ProductDto>, GenericService<Product, ProductDto>>();
+builder.Services.AddScoped<IGenericService<Product, ProductDto>, GenericService<Product, ProductDto>>();
+builder.Services.AddScoped<IGenericService<Category, CategoryDto>, GenericService<Category, CategoryDto>>();
+//builder.Services.AddScoped<IGenericService<Category, CategoryDto>, GenericService<Category, CategoryDto>>(); 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // --- Update: Register Specific ProductService (ONLY if IProductService has methods beyond generic CRUD) ---
 // If IProductService (and ProductService class) is *only* for generic CRUD,
@@ -33,6 +37,8 @@ builder.Services.AddScoped<IGenericService<ProductDto>, GenericService<Product, 
 // and rely solely on IGenericService<ProductDto> injection in controllers.
 // For now, keeping it as it was defined previously.
 builder.Services.AddScoped<IProductService, ProductService>();
+//builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

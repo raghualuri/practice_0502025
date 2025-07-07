@@ -1,22 +1,26 @@
 ﻿using AutoMapper;
 using practice_0502025.Application.Interfaces; // For IGenericService and IGenericRepository
+using practice_0502025.Entities;
+using practice_0502025.Infrastructure.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace practice_0502025.Services.Implementations
 {
-    public class GenericService<TEntity, TEntityDto> : IGenericService<TEntityDto>
+    public class GenericService<TEntity, TEntityDto> : IGenericService<TEntity,TEntityDto>
         where TEntity : class, new()
         where TEntityDto : class, new()
     {
         protected readonly IGenericRepository<TEntity> _repository;
         protected readonly IMapper _mapper;
-
-        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper)
+        protected readonly IUnitOfWork _unitOfWork; // NEW: Inject IUnitOfWork
+        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper , IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork; // Initialize
         }
+
 
         public async Task<IEnumerable<TEntityDto>> GetAllAsync()
         {
@@ -34,7 +38,8 @@ namespace practice_0502025.Services.Implementations
         {
             var entity = _mapper.Map<TEntity>(dto);
             await _repository.AddAsync(entity);
-            await _repository.SaveChangesAsync();
+            await _unitOfWork.CommitAsync(); // Use Unit of Work to save changes
+
             return _mapper.Map<TEntityDto>(entity);
         }
 
@@ -49,7 +54,8 @@ namespace practice_0502025.Services.Implementations
             _mapper.Map(dto, existingEntity);
 
             _repository.Update(existingEntity);
-            await _repository.SaveChangesAsync();
+            await _unitOfWork.CommitAsync(); // Use Unit of Work to save changes
+
         }
 
         public async Task DeleteAsync(int id)
@@ -58,7 +64,7 @@ namespace practice_0502025.Services.Implementations
             if (entity != null)
             {
                 _repository.Delete(entity);
-                await _repository.SaveChangesAsync();
+                await _unitOfWork.CommitAsync(); // Use Unit of Work to save changes
             }
             // Optional: throw exception if not found, depending on desired behavior
         }

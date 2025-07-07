@@ -7,10 +7,10 @@ using practice_0502025.Entities;
 
 namespace practice_0502025.Controllers
 {
-    public class ProductController : BaseController<Product,ProductDto>
+    public class OrderController : BaseController<Order,OrderDto>
     {
         // The constructor passes the ProductDto service to the base controller
-        public ProductController(IGenericService<Product,ProductDto> productService)
+        public OrderController(IGenericService<Order,OrderDto> productService)
             : base(productService)
         {
             // All generic CRUD methods (GetAll, GetById, Create, Update, Delete)

@@ -5,7 +5,7 @@ using practice_0502025.Application.Interfaces;
 
 namespace practice_0502025.Application
 {
-    public interface IProductService: IGenericService<Product,ProductDto>
+    public interface ICategoryService: IGenericService<Category,CategoryDto>
     {
 
         //Task<IEnumerable<ProductDto>> GetAllAsync();

@@ -1,29 +1,35 @@
-﻿// practice_0502025/Services/ProductService.cs
-using AutoMapper;
-using practice_0502025.Application; // For ApplicationDbContext (indirectly via repository)
-using practice_0502025.Application.DTO; // For ProductDto
+﻿using AutoMapper;
+using practice_0502025.Application; // Assuming ApplicationDbContext is here if needed
+using practice_0502025.Application.DTOs; // For ProductDto
+using practice_0502025.Application.Interfaces; // For IGenericRepository, IUnitOfWork, IProductService
 using practice_0502025.Entities; // For Product entity
-using practice_0502025.Application.Interfaces; // For IGenericRepository and IGenericService
-using practice_0502025.Services.Implementations; // For GenericService
 
-namespace practice_0502025.Services
+
+namespace practice_0502025.Services.Implementations
 {
-    // ProductService now inherits from GenericService, passing Product and ProductDto types.
-    // It also implements IProductService (which in turn inherits from IGenericService).
+    // ProductService inherits from GenericService, fulfilling the IProductService contract
     public class ProductService : GenericService<Product, ProductDto>, IProductService
     {
-        // This constructor passes the injected IGenericRepository<Product> and IMapper
-        // to the base GenericService. The base class handles all the generic CRUD logic.
-        public ProductService(IGenericRepository<Product> repository, IMapper mapper)
-            : base(repository, mapper)
+        // No need to redeclare _repository, _unitOfWork, _mapper as they are in the base class.
+        // You can access them via 'base._repository', etc. if needed, but usually not directly.
+
+        public ProductService(
+            IGenericRepository<Product> repository, // Injects IGenericRepository for Product
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(repository, mapper, unitOfWork) // Passes dependencies to the base GenericService constructor
         {
-            // You would only add Product-specific methods here if IProductService
-            // defined methods *beyond* the generic CRUD operations.
-            // For example: Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(string category);
-            // If there are no such specific methods, this constructor body can be empty.
+            // Any Product-specific initialization can go here.
+            // If IProductService had unique methods, they would be implemented here.
         }
 
-        // REMOVE any old/custom implementations of GetAllAsync, GetByIdAsync, CreateAsync,
-        // UpdateAsync, DeleteAsync, as they are now inherited and implemented by GenericService.
+        // Example of a Product-specific method if IProductService were extended:
+        /*
+        public async Task<IEnumerable<ProductDto>> GetProductsByCategory(int categoryId)
+        {
+            var products = await base._repository.FindAsync(p => p.CategoryId == categoryId);
+            return base._mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+        */
     }
 }
