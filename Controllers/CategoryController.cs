@@ -13,6 +13,7 @@ namespace practice_0502025.Controllers
         public CategoryController(IGenericService<Category,CategoryDto> categoryService)
             : base(categoryService)
         {
+        //test
             // All generic CRUD methods (GetAll, GetById, Create, Update, Delete)
             // are now inherited from BaseController.
             // Only add Product-specific controller actions here if they don't fit
