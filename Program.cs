@@ -6,8 +6,8 @@ using practice_0502025.Application.Interfaces; // New: For IGenericRepository, I
 using practice_0502025.Services.Implementations; // New: For GenericRepository, GenericService
 using practice_0502025.Entities; // New: For Product entity
 using practice_0502025.Application.DTOs; // New: For ProductDto
-using practice_0502025.Mapping; // New: For MappingProfile
-using practice_0502025.Infrastructure.Data; // Or where your UnitOfWork is
+using practice_0502025.Infrastructure.Data;
+using practice_0502025.Migrations; // Or where your UnitOfWork is
 
 var builder = WebApplication.CreateBuilder(args);
 

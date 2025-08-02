@@ -1,10 +1,10 @@
 ﻿// File Path: practice_0502025/Mapping/MappingProfile.cs
 
 using AutoMapper;
-using practice_0502025.Application.DTOs; 
-using practice_0502025.Entities;    
+using practice_0502025.Application.DTOs;
+using practice_0502025.Entities;
 
-namespace practice_0502025.Mapping 
+namespace practice_0502025.Migrations
 {
     public class MappingProfile : Profile
     {
